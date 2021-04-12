@@ -1,0 +1,25 @@
+##TODO Remove it
+doctrine:
+    orm:
+        auto_generate_proxy_classes: false
+        metadata_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        query_cache_driver:
+            type: pool
+            pool: doctrine.system_cache_pool
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache_pool
+        second_level_cache:
+            enabled:         true
+            log_enabled:     false
+            region_lifetime: 60
+            region_cache_driver:
+                type: pool
+                pool: doctrine.second_level_cache_pool
+            regions:
+                default_cache:
+                    cache_driver:
+                        type: pool
+                        pool: doctrine.second_level_cache_pool

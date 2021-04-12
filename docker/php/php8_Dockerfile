@@ -1,0 +1,51 @@
+FROM php:8.0.2-fpm-buster
+
+MAINTAINER Oleg Bondarenko <overking@inbox.ru>
+
+ENV COMPOSER_VERSION 2.0.11
+
+RUN apt update && apt install -y \
+    git \
+    zip \
+    wget \
+    libevent-dev \
+    libssl-dev \
+    libicu-dev \
+    libzip-dev \
+    libpcre3 \
+    libpcre3-dev \
+    libxml2-dev \
+    apache2-utils \
+    && docker-php-ext-install \
+    ctype \
+    pcntl \
+    sockets \
+    simplexml \
+    intl \
+    zip \
+    pdo \
+    pdo_mysql \
+    opcache \
+    && wget https://github.com/swoole/swoole-src/archive/v4.6.3.tar.gz \
+    && tar zxvf v4.6.3.tar.gz \
+    && ( \
+        cd swoole-src-4.6.3 \
+        && phpize \
+        && ./configure \
+        && make -j$(nproc) && make install \
+        ) \
+    && rm -r swoole-src-4.6.3 \
+    && echo "extension=swoole.so" >/usr/local/etc/php/conf.d/swoole.ini \
+    && pecl install igbinary && echo "extension=igbinary.so" > /usr/local/etc/php/conf.d/igbinary.ini\
+    && echo "\n" | pecl install redis && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
+    && echo "\n" | pecl install event-3.0.2 && echo "extension=event.so" > /usr/local/etc/php/conf.d/event.ini \
+    && rm -rf /var/cache/apk/*
+
+RUN curl --insecure https://getcomposer.org/download/${COMPOSER_VERSION}/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
+
+COPY php.ini  /usr/local/etc/php/php.ini
+COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
+WORKDIR /var/www/project
+
+STOPSIGNAL SIGTERM
