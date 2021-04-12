@@ -17,7 +17,7 @@ Symfony and PHP speed test suite (Draft)
     composer install
     bin/console doctrine:fixtures:load
 
-### :triangular_ruler: Installation (Not Completed)
-php8 web       - Requests per second:    853.18 [#/sec] (mean)
-php8 workerman - Requests per second:    828.70 [#/sec] (mean)
-php8 swoole    - Requests per second:    794.48 [#/sec] (mean)
+### :triangular_ruler: Test results (Not Completed)
+   * php8 web       - Requests per second:    853.18 [#/sec] (mean)
+   * php8 workerman - Requests per second:    828.70 [#/sec] (mean)
+   * php8 swoole    - Requests per second:    794.48 [#/sec] (mean)
